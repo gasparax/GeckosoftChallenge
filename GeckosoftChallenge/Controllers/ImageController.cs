@@ -34,7 +34,7 @@ namespace GeckosoftChallenge.Controllers
         }
 
         /// <summary>
-        /// Upload an image.
+        /// Uploads an image.
         /// </summary>
         /// <param name="image">Image file.</param>
         /// <returns>JSON with the filename and an integer id</returns>
@@ -57,7 +57,7 @@ namespace GeckosoftChallenge.Controllers
         }
 
         /// <summary>
-        /// Allow the deletion of an uploaded image.
+        /// Allows the deletion of an uploaded image.
         /// </summary>
         /// <param name="id">Image id.</param>
         /// <returns></returns>
@@ -72,7 +72,7 @@ namespace GeckosoftChallenge.Controllers
         }
 
         /// <summary>
-        /// Allow the resize of an uploaded image. 
+        /// Allows the resize of an uploaded image. 
         /// </summary>
         /// <param name="id">Image id.</param>
         /// <param name="updateImageRequest">Height and Width in pixel</param>
