@@ -10,7 +10,7 @@ namespace GeckosoftChallenge.Persistance
         const string pathRoot = @"uploads\";
 
         private static long id = 0;
-        private readonly ILogger<ImageController> logger;
+        //private readonly ILogger<ImageController> logger;
 
 
         public ImageRepository()
@@ -44,7 +44,7 @@ namespace GeckosoftChallenge.Persistance
             catch (IOException e)
             {
                 id--;
-                logger.LogError(e.ToString());
+                //logger.LogError(e.ToString());
                 return -1;
             }
             return id;
@@ -77,7 +77,7 @@ namespace GeckosoftChallenge.Persistance
             }
             catch (Exception e)
             {
-                logger.LogError(e.ToString());
+                //logger.LogError(e.ToString());
             }
             return true;
         }
