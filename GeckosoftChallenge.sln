@@ -5,7 +5,12 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeckosoftChallenge", "GeckosoftChallenge\GeckosoftChallenge.csproj", "{32F6687E-5A3A-4B18-8C07-B59E599BFE56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeckosoftChallenge.Test", "GeckosoftChallenge.Test\GeckosoftChallenge.Test.csproj", "{8222221C-EA73-4273-B12C-03DCE94F619D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeckosoftChallenge.Test", "GeckosoftChallenge.Test\GeckosoftChallenge.Test.csproj", "{8222221C-EA73-4273-B12C-03DCE94F619D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F52D2C4E-374B-44CD-A4A3-2FEA68C0813C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

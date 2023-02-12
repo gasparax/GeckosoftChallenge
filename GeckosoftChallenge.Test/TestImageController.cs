@@ -1,6 +1,7 @@
 using GeckosoftChallenge.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 using System.Text.Json;
 
 namespace GeckosoftChallenge.Test
@@ -29,18 +30,15 @@ namespace GeckosoftChallenge.Test
             string[] fileNames = Directory.GetFiles(pathToFiles);
             foreach (var fileName in fileNames)
             {
-                //string pathToFile = Path.Combine(pathToFiles, fileName);
                 Console.WriteLine("Loading " + fileName);
-                using (var stream = File.OpenRead(fileName))
-                {
-                    var file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(fileName));
-                    var uploadResponse = (OkObjectResult) await controller.UploadImage(file);
-                    Console.WriteLine("Image loaded " + (string)uploadResponse.Value);
-                }
+                using var stream = File.OpenRead(fileName);
+                FormFile file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(fileName));
+                var uploadResponse = (OkObjectResult)await controller.UploadImage(file);
+                Console.WriteLine("Image loaded " + uploadResponse.Value as string);
             }
             //Act
             var response = (OkObjectResult)controller.GetImages();
-            string jsonResponse = (string)response.Value;
+            string? jsonResponse = response.Value as string;
             Console.WriteLine(jsonResponse);
             List<string> responseList = JsonSerializer.Deserialize<List<string>>(jsonResponse);
             //Assert
@@ -85,7 +83,7 @@ namespace GeckosoftChallenge.Test
                 var file = new FormFile(stream, 0, stream.Length, null, fileName);
                 response = (OkObjectResult) await controller.UploadImage(file);
             }
-            string jsonResponse = (string) response.Value;
+            string? jsonResponse = response.Value as string;
             Console.WriteLine(jsonResponse);
             Dictionary<string, string> responseDict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonResponse);
             //Assert
@@ -114,12 +112,12 @@ namespace GeckosoftChallenge.Test
             string pathToFile = @"..\..\..\testImages\Image1.png";
             var fileName = "Image1.png";
             var uploadResponse = new OkObjectResult("");
-            using (var stream = File.OpenRead(pathToFile))
+            using (FileStream stream = File.OpenRead(pathToFile))
             {
                 var file = new FormFile(stream, 0, stream.Length, null, fileName);
                 uploadResponse = (OkObjectResult)await controller.UploadImage(file);
             }
-            string jsonResponse = (string)uploadResponse.Value;
+            string? jsonResponse = uploadResponse.Value as string;
             Console.WriteLine(jsonResponse);
             Dictionary<string, string> responseDict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonResponse);
             //Assert
@@ -134,26 +132,26 @@ namespace GeckosoftChallenge.Test
         }
 
         [TestMethod]
-        public void Update_OnFail_NoImage_Return404()
+        public async Task Update_OnFail_NoImage_Return404Async()
         {
             //Arrange
             var controller = new ImageController();
 
             //Act
-            var response = (NotFoundObjectResult)controller.UpdateImage(-1, new Requests.UpdateImageRequest(100, 100));
+            var response = (NotFoundObjectResult) await controller.UpdateImageAsync(-1, new Requests.UpdateImageRequest(100, 100));
             Console.WriteLine(response.Value);
             //Assert
             Assert.AreEqual(response.Value, "Image not found.");
         }
 
         [TestMethod]
-        public void Update_OnFail_BadRequest_Return400()
+        public async Task Update_OnFail_BadRequest_Return400Async()
         {
             //Arrange
             var controller = new ImageController();
 
             //Act
-            var response = (BadRequestObjectResult)controller.UpdateImage(0, new Requests.UpdateImageRequest(-1, -1));
+            var response = (BadRequestObjectResult) await controller.UpdateImageAsync(0, new Requests.UpdateImageRequest(-1, -1));
             Console.WriteLine(response.Value);
             //Assert
             Assert.AreEqual(response.Value, "Width and Height must be greater then 0.");
@@ -167,20 +165,25 @@ namespace GeckosoftChallenge.Test
             string pathToFile = @"..\..\..\testImages\Image1.png";
             var fileName = "Image1.png";
             var uploadResponse = new OkObjectResult("");
+            FormFile file;
             using (var stream = File.OpenRead(pathToFile))
             {
-                var file = new FormFile(stream, 0, stream.Length, null, fileName);
-                uploadResponse = (OkObjectResult)await controller.UploadImage(file);
+                file = new FormFile(stream, 0, stream.Length, null, fileName);
+                uploadResponse = (OkObjectResult) await controller.UploadImage(file);
             }
-            string jsonResponse = (string)uploadResponse.Value;
+            string? jsonResponse = uploadResponse.Value as string;
             Console.WriteLine(jsonResponse);
             Dictionary<string, string> responseDict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonResponse);
-
             //Act
-            var response = (OkObjectResult) controller.UpdateImage(long.Parse(responseDict["id"]), new Requests.UpdateImageRequest(100, 100));
+            var response = (OkObjectResult) await controller.UpdateImageAsync(long.Parse(responseDict["id"]), new Requests.UpdateImageRequest(100, 100));
             Console.WriteLine(response.Value);
             //Assert
             Assert.AreEqual(response.Value, "Image size updated.");
+            //Image img = Image.FromFile(Path.Combine(Directory.GetCurrentDirectory() + @$"\uploads\{responseDict["id"]}\{fileName}"));
+            //Console.WriteLine(img.Height);
+            //Console.WriteLine(img.Height);
+            //Assert.AreEqual(img.Height, 100);
+            //Assert.AreEqual(img.Width, 100);
             deleteUploadedFiles();
         }
 

@@ -20,8 +20,4 @@
     <ProjectReference Include="..\GeckosoftChallenge\GeckosoftChallenge.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Helper\" />
-  </ItemGroup>
-
 </Project>

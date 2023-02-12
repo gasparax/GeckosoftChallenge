@@ -42,7 +42,6 @@ namespace GeckosoftChallenge.Persistance
             catch (IOException e)
             {
                 id--;
-                //logger.LogError(e.ToString());
                 Console.WriteLine(e.ToString());
                 return -1;
             }
@@ -80,13 +79,12 @@ namespace GeckosoftChallenge.Persistance
             }
             catch (Exception e)
             {
-                //logger.LogError(e.ToString());
                 Console.WriteLine(e.ToString());
             }
             return true;
         }
 
-        public bool ResizeImage(long id, int width, int height)
+        public async Task<bool> ResizeImage(long id, int width, int height)
         {
             
             if (!Directory.Exists(pathRoot + id))
@@ -96,12 +94,10 @@ namespace GeckosoftChallenge.Persistance
             string fileName = Directory.GetFiles(pathRoot + id)[0];
             try
             {
-                using (Image image = Image.Load(fileName))
-                {
-                    image.Mutate(x => x.Resize(width, height));
-                    image.Save(fileName);
-                }
-
+                using Image image = await Image.LoadAsync(fileName);
+                image.Mutate(x => x.Resize(width, height));
+                image.Save(fileName);
+                image.Dispose();
             }
             catch (IOException e)
             {

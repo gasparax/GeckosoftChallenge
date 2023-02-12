@@ -10,7 +10,7 @@ namespace GeckosoftChallenge.Controllers
     {
 
         private readonly ImageRepository ImageRepository;
-        public static readonly List<string> ImageExtensions = new List<string> { ".jpg", ".jpeg", ".jpe", ".bmp", ".gif", ".png" };
+        public static readonly List<string> ImageExtensions = new() { ".jpg", ".jpeg", ".jpe", ".bmp", ".gif", ".png" };
 
         public ImageController()
         {
@@ -36,7 +36,7 @@ namespace GeckosoftChallenge.Controllers
         /// <summary>
         /// Upload an image.
         /// </summary>
-        /// <param name="image"></param>
+        /// <param name="image">Image file.</param>
         /// <returns>JSON with the filename and an integer id</returns>
         [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile image)
@@ -59,7 +59,7 @@ namespace GeckosoftChallenge.Controllers
         /// <summary>
         /// Allow the deletion of an uploaded image.
         /// </summary>
-        /// <param name="id">Image id</param>
+        /// <param name="id">Image id.</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult DeleteImage(long id)
@@ -74,17 +74,18 @@ namespace GeckosoftChallenge.Controllers
         /// <summary>
         /// Allow the resize of an uploaded image. 
         /// </summary>
-        /// <param name="id">Image id</param>
+        /// <param name="id">Image id.</param>
         /// <param name="updateImageRequest">Height and Width in pixel</param>
         /// <returns>Ok</returns>
         [HttpPut("{id}")]
-        public IActionResult UpdateImage(long id, UpdateImageRequest updateImageRequest)
+        public async Task<IActionResult> UpdateImageAsync(long id, UpdateImageRequest updateImageRequest)
         {
             if (updateImageRequest.Width <= 0 || updateImageRequest.Height <= 0)
             {
                 return BadRequest("Width and Height must be greater then 0.");
             }
-            if(ImageRepository.ResizeImage(id, updateImageRequest.Width, updateImageRequest.Height))
+            bool resized = await ImageRepository.ResizeImage(id, updateImageRequest.Width, updateImageRequest.Height);
+            if(resized)
             {
                 return Ok("Image size updated.");
             };

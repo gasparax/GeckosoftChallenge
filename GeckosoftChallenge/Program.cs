@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(s=>
 {
-    s.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    s.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
         Title = "GeckosoftChallenge - Image API",
