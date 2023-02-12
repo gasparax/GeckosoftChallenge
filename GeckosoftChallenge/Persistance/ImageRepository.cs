@@ -7,12 +7,10 @@ namespace GeckosoftChallenge.Persistance
 {
     public class ImageRepository 
     {
-        const string pathRoot = @"uploads\";
+        string pathRoot = Directory.GetCurrentDirectory() + @"\uploads\";
 
         private static long id = 0;
         //private readonly ILogger<ImageController> logger;
-
-
         public ImageRepository()
         {
             if (Directory.Exists(pathRoot))
@@ -45,6 +43,7 @@ namespace GeckosoftChallenge.Persistance
             {
                 id--;
                 //logger.LogError(e.ToString());
+                Console.WriteLine(e.ToString());
                 return -1;
             }
             return id;
@@ -53,11 +52,15 @@ namespace GeckosoftChallenge.Persistance
         public List<string> GetImagesNamesList()
         {
             List<string> imagesNames = new List<string>();
+            if (!Directory.Exists(pathRoot))
+            {
+                return imagesNames;
+            }
             string[] fileEntries = Directory.GetDirectories(pathRoot);
             foreach (string dir in fileEntries) 
             {
                 if (!Directory.GetFiles(dir).Any()) { continue; }
-                imagesNames.Add(Directory.GetFiles(dir)[0].Substring(10));
+                imagesNames.Add(Path.GetFileName(Directory.GetFiles(dir)[0]));
             }
             imagesNames.Sort();
             return imagesNames;
@@ -78,6 +81,7 @@ namespace GeckosoftChallenge.Persistance
             catch (Exception e)
             {
                 //logger.LogError(e.ToString());
+                Console.WriteLine(e.ToString());
             }
             return true;
         }
@@ -101,7 +105,7 @@ namespace GeckosoftChallenge.Persistance
             }
             catch (IOException e)
             {
-
+                Console.WriteLine(e.ToString());
                 return false;
             }
             return true;

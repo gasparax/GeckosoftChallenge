@@ -32,8 +32,7 @@ namespace GeckosoftChallenge.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile image)
         {
-            if (image == null) { return BadRequest(); }
-            if (!ImageExtensions.Contains(Path.GetExtension(image.FileName)))
+            if (image == null || !ImageExtensions.Contains(Path.GetExtension(image.FileName)))
             {
                 return BadRequest("The selected file is not an image. Load a image file.");
             }
@@ -55,7 +54,7 @@ namespace GeckosoftChallenge.Controllers
             {
                 return Ok("Image Deleted.");
             }
-            return StatusCode(404, "Image not found.");
+            return NotFound("Image not found.");
         }
 
         [HttpPut("{id}")]
@@ -65,8 +64,11 @@ namespace GeckosoftChallenge.Controllers
             {
                 return BadRequest("Width and Height must be greater then 0.");
             }
-            ImageRepository.ResizeImage(id, updateImageRequest.Width, updateImageRequest.Height);
-            return Ok("Image size updated.");
+            if(ImageRepository.ResizeImage(id, updateImageRequest.Width, updateImageRequest.Height))
+            {
+                return Ok("Image size updated.");
+            };
+            return NotFound("Image not found.");
         }
     }
 
