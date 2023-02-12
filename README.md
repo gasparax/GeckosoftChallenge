@@ -14,10 +14,10 @@ The main components are the controller (`ImageController.cs`), for handling API 
 ```
 git clone https://github.com/gasparax/GeckosoftChallenge
 ```
-### Start the application
 ```
 cd GeckosoftChallenge
 ```
+### Start the application
 ```
 dotnet run --project GeckosoftChallenge
 ```

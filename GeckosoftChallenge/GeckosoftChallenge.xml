@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GeckosoftChallenge</name>
+    </assembly>
+    <members>
+        <member name="M:GeckosoftChallenge.Controllers.ImageController.GetImages">
+            <summary>
+            Returns the list of the images uploaded in alphabetical order.
+            </summary>
+            <returns>JSON list of image names</returns>
+        </member>
+        <member name="M:GeckosoftChallenge.Controllers.ImageController.UploadImage(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Upload an image.
+            </summary>
+            <param name="image"></param>
+            <returns>JSON with the filename and an integer id</returns>
+        </member>
+        <member name="M:GeckosoftChallenge.Controllers.ImageController.DeleteImage(System.Int64)">
+            <summary>
+            Allow the deletion of an uploaded image.
+            </summary>
+            <param name="id">Image id</param>
+            <returns></returns>
+        </member>
+        <member name="M:GeckosoftChallenge.Controllers.ImageController.UpdateImage(System.Int64,GeckosoftChallenge.Requests.UpdateImageRequest)">
+            <summary>
+            Allow the resize of an uploaded image. 
+            </summary>
+            <param name="id">Image id</param>
+            <param name="updateImageRequest">Height and Width in pixel</param>
+            <returns>Ok</returns>
+        </member>
+    </members>
+</doc>

@@ -17,6 +17,10 @@ namespace GeckosoftChallenge.Controllers
             ImageRepository = new ImageRepository();
         }
 
+        /// <summary>
+        /// Returns the list of the images uploaded in alphabetical order.
+        /// </summary>
+        /// <returns>JSON list of image names</returns>
         [HttpGet("all")]
         public IActionResult GetImages()
         {
@@ -29,6 +33,11 @@ namespace GeckosoftChallenge.Controllers
             return Ok(jsonListResponse);
         }
 
+        /// <summary>
+        /// Upload an image.
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns>JSON with the filename and an integer id</returns>
         [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile image)
         {
@@ -47,6 +56,11 @@ namespace GeckosoftChallenge.Controllers
             return Ok(JsonSerializer.Serialize(response));
         }
 
+        /// <summary>
+        /// Allow the deletion of an uploaded image.
+        /// </summary>
+        /// <param name="id">Image id</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult DeleteImage(long id)
         {
@@ -57,6 +71,12 @@ namespace GeckosoftChallenge.Controllers
             return NotFound("Image not found.");
         }
 
+        /// <summary>
+        /// Allow the resize of an uploaded image. 
+        /// </summary>
+        /// <param name="id">Image id</param>
+        /// <param name="updateImageRequest">Height and Width in pixel</param>
+        /// <returns>Ok</returns>
         [HttpPut("{id}")]
         public IActionResult UpdateImage(long id, UpdateImageRequest updateImageRequest)
         {
