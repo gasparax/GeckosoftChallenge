@@ -21,6 +21,10 @@ cd GeckosoftChallenge
 ```
 dotnet run --project GeckosoftChallenge
 ```
+The API can be manually tested through swagger interface:
+```
+https://localhost:5000/swagger/index.html
+```
 ### Run the tests
 ```
 dotnet test
