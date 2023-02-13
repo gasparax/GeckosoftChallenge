@@ -25,7 +25,7 @@ https://localhost:5000/api/Image/id
 
 [PUT]
 https://localhost:5000/api/Image/id
-`body:{"id":<id>, "height":<new height>, width:<new width>}`
+In JSON `{"height":<new height>, width:<new width>}`
 
 ## How to run
 ```
