@@ -1,6 +1,7 @@
 using GeckosoftChallenge.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
 using System.Drawing;
 using System.Text.Json;
 
@@ -170,6 +171,7 @@ namespace GeckosoftChallenge.Test
             {
                 file = new FormFile(stream, 0, stream.Length, null, fileName);
                 uploadResponse = (OkObjectResult) await controller.UploadImage(file);
+                stream.Dispose();
             }
             string? jsonResponse = uploadResponse.Value as string;
             Console.WriteLine(jsonResponse);
@@ -179,11 +181,9 @@ namespace GeckosoftChallenge.Test
             Console.WriteLine(response.Value);
             //Assert
             Assert.AreEqual(response.Value, "Image size updated.");
-            //Image img = Image.FromFile(Path.Combine(Directory.GetCurrentDirectory() + @$"\uploads\{responseDict["id"]}\{fileName}"));
-            //Console.WriteLine(img.Height);
-            //Console.WriteLine(img.Height);
-            //Assert.AreEqual(img.Height, 100);
-            //Assert.AreEqual(img.Width, 100);
+            SixLabors.ImageSharp.Image img = SixLabors.ImageSharp.Image.Load(Path.Combine(Directory.GetCurrentDirectory() + @$"\uploads\{responseDict["id"]}\{fileName}"));
+            Assert.AreEqual(img.Height, 100);
+            Assert.AreEqual(img.Width, 100);
             deleteUploadedFiles();
         }
 
